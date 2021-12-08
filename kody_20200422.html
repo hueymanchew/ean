@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <link href="kody.css" rel="stylesheet">
+   <script type="text/javascript" src="articles.js"></script>
+
+<style>
+
+.box::after {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: rebeccapurple;
+    border: 1px solid black;
+   visibility: hidden;
+   }   
+  
+.box::after:hover {
+   visibility: visible;
+}
+
+.box:hover::after {
+   visibility: visible;
+}
+
+</style>
+
+
+
+</head>
+<body>
+	<div id="form1">
+	<select name="arts" id="art_select">
+		<option value="">--Wybierz artykuł--</option>
+	</select>    
+    <input id ="inp1" type="submit" value="Dodaj">
+    <input id ="print1" type="submit" value="Drukuj">
+	</div>
+	<div id="main">
+	<!--div class="tag">
+		<p>BUŁKA Z ZIARNAMI 65 g  x 3 szt.</p>
+		<p>1428951</p>
+		<p class="ean">2ADKOCR*caaaac+</p>
+		</div-->
+	</div>
+
+<script defer>
+
+const form = document.getElementById('form1');
+const div_main = document.getElementById("main");
+const inp1 = document.getElementById("inp1");
+const print1 = document.getElementById("print1");
+
+const select1 = document.getElementById("art_select");
+
+let articles = [[0, "", ""],
+[701021,"CHLEB ŻYTNI - RAZOWY Z SOJĄ 480 g","2030554500006"],
+[1273436,"CHLEB DOBRODZIEJA ZAKWASEM 410 g","5907377304623"],
+[527294,"CHLEB FINTES 325 g","2000002591375"],
+[1233453,"CHLEB MAZOWIECKI 450 g","5902054001048"],
+[1339056,"CHLEB WYPIEKANY NA KAMIENIU 485 g","5902054016585"],
+[1138713,"CHLEB KŁOS ORKISZU 400 g","5902054008399"],
+[701032,"CHLEB GRAHAM 430 g","2030114700006"],
+[701030,"CHLEB Z DYNIĄ 380 g","2030664800003"],
+[1024094, "CHLEB PSZENNY 430 g", "2030344400004"],
+[1283363, "CHLEB SIELSKI 410 g", "5907377305866"],
+[1302640, "CHLEB SŁOWIAŃSKI 380 g", "5902054008023"],
+[753424, "CHLEB STAROPOLSKI 380 g", "2030475800001"],
+[701048, "CHLEB WIEJSKI OWALNY 380 g", "2030326200004"],
+[1340771, "CHLEB DWORSKI 400 g", "5901948009016"],
+[701020, "CHLEB ŻYTNI - RAZOWY 480 g", "2030252000006"],
+[1341423, "CHLEB ŻYTNI 400 g", "5901948009030"],
+[1274012, "CHLEB KRÓLEWSKI 410 g", "5907377304647"],
+[1416050, "CHLEB PEŁNE ZIARNO 400 g", "5907651671625"],
+[1401451, "CHLEB WIELOZIARNISTY 400 g", "2030541700006"],
+[701013, "CHLEB Z SIEMIENIEM LNIANYM 380 g", "2030619200001"],
+[701022, "CHLEB ZE SŁONECZNIKIEM 480 g", "2030676700001"],
+[527293,"CHLEB DRWALSKI FINTES MAŁY 380 g","2000002591368"],
+[1429658,"CHLEB DO ŻURKU 350g", "5903111468866"]
+
+];
+
+const kody = {
+   "CHLEBY": [
+      [701021,"CHLEB ŻYTNI - RAZOWY Z SOJĄ 480 g","2030554500006"],
+      [1273436,"CHLEB DOBRODZIEJA ZAKWASEM 410 g","5907377304623"],
+      [527294,"CHLEB FINTES 325 g","2000002591375"],
+      [1233453,"CHLEB MAZOWIECKI 450 g","5902054001048"],
+      [1339056,"CHLEB WYPIEKANY NA KAMIENIU 485 g","5902054016585"],
+	  [753424, "CHLEB STAROPOLSKI", "2030475800001"],
+	  [1430700, "CHLEB SŁONECZNIKOWY BEZ DROŻDŻY", "5907651674046"],
+	  [1180126, "CHLEB BALTONOWSKI NASZA PIEKARNIA", "2030157900005"],
+	  [701024, "CHLEB ŻYTNI-RAZOWY ZE ŚLIWKĄ 480 g", "2030666900008"],
+	  [1401451, "CHLEB WIELOZIARNISTY 400g OMAR", "2030541700006"]
+	  
+	  ],
+   "BUŁKI": [
+      [1369215,"BAGIETKA 280 g","5413476973351"],
+      [328192,"BAGIETKA 405 g","5900868002817"],
+      [1405580,"BUŁKA PARYSKA 260 g","5907377309604"],
+      [1210433,"BUŁKA RÓŻYCZKA JASNA 70 g","5907377303213"],
+      [1373727,"BUŁKA ŚNIADANIOWA 65 g","5907651673476"]
+   ],
+   "PRZEKĄSKI SŁONE": [
+      [718871,"CEBULARZ 120 g","2030121200001"],
+      [697817,"DELICJA SEROWA 63 g","5413476969859"],
+      [1322907,"MINI PIZZA Z PIECZARKAMI 155 g","5901537003890"],
+      [1303082,"MINI PIZZA Z SALAMI 155 g","5901537004132"],
+      [1303076,"MINI PIZZA Z SZYNKĄ 155 g","5901537004125"],
+      [1306229,"ZAPIEKANKA Z SALAMI 114 g","5901537004057"]
+   ],
+   "INNE": [
+		[439651, "NUTELLA 350 G", "2014975200004"],
+		[70167, "CZEK WEDEL 90g  KLASYCZ GORZKA 64%", "5901588018768"],
+		[1429658, "CHLEBEK DO ZURKU 250g", "5903111468866"]
+
+		]
+};
+articles = [];
+
+articles.push([0, "", ""]);
+
+for (let [key, value] of Object.entries(kody1)) {
+   let opt_grp = document.createElement("optgroup");
+   opt_grp.setAttribute("label", key);
+   select1.add(opt_grp);
+   value.forEach(e => {
+      let opt = document.createElement("option");
+	   opt.text = e[1];
+	   select1.add(opt);
+      articles.push([...e]);
+      // debugger;
+   });
+   
+   
+   console.log(`${key}: ${value}`);
+
+}
+
+
+/* let opt_grp = document.createElement("optgroup");
+opt_grp.setAttribute("label", "xxx");
+select1.add(opt_grp);
+for (let i = 1; i < articles.length; i++) {
+	let opt = document.createElement("option");
+	opt.text = articles[i][1];
+	select1.add(opt);
+
+}
+ */
+
+ print1.onclick = function() {window.print()};
+
+inp1.onclick = submit;
+
+function submit(event) {
+	console.log(select1.selectedIndex);
+	if (div_main.childNodes.length >= 40 || select1.selectedIndex == 0) 
+		{
+		    return;
+		}
+  event.preventDefault();
+let div_new = document.createElement("div");
+let si = select1.selectedIndex;
+div_new.setAttribute("class", "tag");
+
+let p1 = document.createElement("p");
+p1.append(articles[si][1]);
+let p2 = document.createElement("p");
+p2.append(articles[si][0]);
+let p3 = document.createElement("p");
+p3.append(ean2fontS(articles[si][2]));
+p3.setAttribute("class","ean");
+
+div_new.append(p1, p2, p3);
+
+div_new_app = div_main.appendChild(div_new);
+div_main.append(div_new_app.cloneNode(true), div_new_app.cloneNode(true), div_new_app.cloneNode(true), div_new_app.cloneNode(true));
+
+  }
+
+  
+var set_sequence   = [[1,1,1,1,1,1],[1,1,0,1,0,0],[1,1,0,0,1,0],[1,1,0,0,0,1],[1,0,1,1,0,0],
+                     [1,0,0,1,1,0],[1,0,0,0,1,1],[1,0,1,0,1,0],[1,0,1,0,0,1],[1,0,0,1,0,1]];
+
+var bac_setsS      = [['K','L','M','N','O','P','Q','R','S','T'],['A','B','C','D','E','F','G','H','I','J'],['a','b','c','d','e','f','g','h','i','j']];
+
+ 
+function ean2fontS (sEanCode) /*{{{*/
+{
+
+    var i, sEan1, sEanFontL='', sEanFontR='', eclen;
+    sEan1 = sEanCode[0];
+  
+    if (sEanCode.length == 13)
+    { 
+       sEanFontL = sEan1;
+       for (i=0; i<=5; i++)
+       {
+//         console.log("i %d set_seq %d bac %s", i, set_sequence[sEan1][i], bac_setsS[set_sequence[sEan1][i]] );
+		  sEanFontL = sEanFontL + bac_setsS[set_sequence[sEan1][i]][sEanCode[i+1]];
+       }
+       for (i=7; i<=12; i++)
+       {
+          sEanFontR = sEanFontR + bac_setsS[2][sEanCode[i]];
+       }
+       sEanFontL = sEanFontL + '*' + sEanFontR + '+';
+    }
+    else if (sEanCode.length == 8)
+    { 
+         sEanFontL = sEan1;
+       for (i=1; i<4; i++)
+       { 
+       sEanFontL = sEanFontL + bac_setsS[1][sEanCode[i]]; 
+    }
+       for (i=4; i<=7; i++)
+       { 
+       sEanFontR = sEanFontR + bac_setsS[2][sEanCode[i]];
+    }
+       sEanFontL = sEanFontL + '*' + sEanFontR + '+';
+	}
+	else 
+	{
+		sEanFontL = "";
+	}
+		
+    return sEanFontL;
+
+ 
+ }  
+  
+</script>
+<script>
+	// const inx = select1.children.length;
+	// for (let k=1; k<5; k++){
+	// 	select1.selectedIndex=Math.floor(Math.random() * (inx - 1)) + 1;
+	// 	inp1.click();
+	// }
+</script>
+
+
+<!--script id="module1" src="sklep.js"></script-->
+
+<!--script defer>
+  const jsonNode = document.querySelector("script[id='module1']");
+  const jsonText = jsonNode.textContent;
+  //const jsonData = JSON.parse(jsonText);
+  console.log(jsonText);
+  console.log(art_sklep);
+
+  </script-->
+
+
+</html>
