@@ -30,7 +30,7 @@ select {
 div.tag {
   width: 40mm;
   height: 36mm;
-  background-color: yellow;
+  background-color: rgb(200, 200, 10);
   xfloat: left;
   xborder: 1px dotted black;
 
