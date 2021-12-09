@@ -58,14 +58,7 @@ div.tag p.ean {
   text-overflow: clip;
 }
 
-@media print {
-  div#form1 {
-    display: none;
-  }
-  div#main {
-    zoom: 1;
-  }
-}
+
 
 @font-face {
   font-family: "code_ean13regular";
